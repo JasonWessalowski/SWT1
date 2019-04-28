@@ -205,7 +205,8 @@ public class Main extends JFrame {
       Messages mes = new Messages(Locale.ENGLISH);
       if (args.length == 1 && args[0].equalsIgnoreCase(mes.getString("Main.3")))
       {
-        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5") + System.getProperty("line.separator") + mes.getString("Main.7"));
+        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5")
+        + System.getProperty("line.separator") + mes.getString("Main.7"));
         System.out.println(mes.getString("Main.8"));
         System.out.println(mes.getString("Main.9"));
         System.out.println();
