@@ -93,8 +93,7 @@ public class Main extends JFrame {
     init();
   }
 
-  private void init()
-  {
+  private void init() {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices();
     GraphicsDevice gd = gs[0];
