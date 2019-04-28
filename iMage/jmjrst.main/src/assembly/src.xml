@@ -8,8 +8,13 @@
 	</formats>
 	<fileSets>
 		<fileSet>
+			<useDefaultExcludes>false</useDefaultExcludes>
 			<includes>
 				<include>pom.xml</include>
+				<include>.gitignore</include>
+				<include>checkstyle.launch</include>
+				<include>integration-test.launch</include>
+				<include>LICENSE</include>
 			</includes>
 		</fileSet>
 
