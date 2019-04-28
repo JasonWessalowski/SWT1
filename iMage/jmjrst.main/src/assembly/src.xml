@@ -8,7 +8,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<useDefaultExcludes>false</useDefaultExcludes>
+			<useDefaultExcludes>false </useDefaultExcludes>
 			<includes>
 				<include>pom.xml</include>
 				<include>.gitignore</include>

@@ -7,4 +7,23 @@
   </parent>
   <artifactId>2048877</artifactId>
   <groupId>swt1.ub1.a1</groupId>
+  
+  <build>
+  	<pluginManagement>
+  		<plugins>
+  			<plugin>
+  				<groupId>org.apache.maven.plugins</groupId>
+  				<artifactId>maven-jar-plugin</artifactId>
+  				<configuration>
+  					<archive>
+  						<manifest>
+  							<mainClass>org.jis.Main</mainClass>
+  							<addClasspath>true</addClasspath>
+  						</manifest>
+  					</archive>
+  				</configuration>
+  			</plugin>
+  		</plugins>
+  	</pluginManagement>
+  </build>
 </project>
