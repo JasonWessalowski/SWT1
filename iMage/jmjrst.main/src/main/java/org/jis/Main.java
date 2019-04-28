@@ -198,8 +198,9 @@ public class Main extends JFrame {
 
   public static void main(String[] args)
   {
-    if (args.length == 0) new Main();
-    else
+    if (args.length == 0) {
+    	new Main();
+    } else
     {
       Messages mes = new Messages(Locale.ENGLISH);
       if (args.length == 1 && args[0].equalsIgnoreCase(mes.getString("Main.3")))
