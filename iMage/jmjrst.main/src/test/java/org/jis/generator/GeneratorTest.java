@@ -36,16 +36,23 @@ public class GeneratorTest {
 	}
 
 	@Test
-	public void rotateImageTestOne() {
+	public void rotateImageTestRandom() {
 		
 		assertEquals("Überprüfe ob beliebiges Bild bei rotateImage() unverändert zurückgegeben wird, wenn angle=0.0 ist.", bufferedImage, generator.rotateImage(bufferedImage, 0.0));
 		
 	}
 	
 	@Test
-	public void totateImageTestTwo() {
+	public void rotateImageTestNull() {
 		
 		assertNull("Überprüfe ob null zurückgegeben wird, wenn null in rotateImage() eingesetzt wird.", generator.rotateImage(null, 0.0));
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void rotateImageTestException() {
+			
+		generator.rotateImage(bufferedImage, 0.42);
 		
 	}
 
