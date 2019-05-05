@@ -101,4 +101,52 @@ public class GeneratorTest {
 		}
 
 	}
+	
+	@Test
+	public void rotateImageTestMinus90() {
+
+		BufferedImage editedImage = generator.rotateImage(bufferedImage, Math.toRadians(-90));
+		BufferedImage comparisonImage = generator.rotateImage(bufferedImage, Math.toRadians(270));
+
+		assertEquals("Überprüfe ob Höhe des Bildes mit Drehung -90° mit der von 270° übereinstimmen.", bufferedImage.getHeight(), editedImage.getWidth());
+		assertEquals("Überprüfe ob Breite des Bildes mit Drehung -90° mit der von 270° übereinstimmen.", bufferedImage.getWidth(), editedImage.getHeight());
+
+		for (int i = 0; i < editedImage.getWidth(); i++) {
+			
+			for (int j = 0; j < editedImage.getHeight(); j++) {
+				
+				int editedPixel = editedImage.getRGB(i, j);
+				int comparisonPixel = comparisonImage.getRGB(i, j);
+	
+				assertEquals("Stimmen die individuellen Pixel überein?", editedPixel, comparisonPixel);
+				
+			}
+			
+		}
+
+	}
+
+	@Test
+	public void rotateImageTestMinus270() {
+
+		BufferedImage editedImage = generator.rotateImage(bufferedImage, Math.toRadians(-270));
+		BufferedImage comparisonImage = generator.rotateImage(bufferedImage, Math.toRadians(90));
+		
+		assertEquals("Überprüfe ob Höhe des Bildes mit Drehung -270° mit der von 90° übereinstimmen.", bufferedImage.getHeight(), editedImage.getWidth());
+		assertEquals("Überprüfe ob Höhe des Bildes mit Drehung -270° mit der von 90° übereinstimmen.", bufferedImage.getWidth(), editedImage.getHeight());
+		
+		for (int i = 0; i < editedImage.getWidth(); i++) {
+			
+			for (int j = 0; j < editedImage.getHeight(); j++) {
+				
+				int editedPixel = editedImage.getRGB(i, j);
+				int comparisonPixel = comparisonImage.getRGB(i, j);
+	
+				assertEquals("Stimmen die individuellen Pixel überein?", editedPixel, comparisonPixel);
+				
+			}
+			
+		}
+
+	}
 }
