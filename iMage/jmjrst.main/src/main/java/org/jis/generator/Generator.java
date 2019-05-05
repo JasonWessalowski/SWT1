@@ -68,6 +68,7 @@ import org.jis.options.Options;
 public class Generator {
   public final static double ROTATE_90  = Math.toRadians(90);
   public final static double ROTATE_270 = Math.toRadians(270);
+  public final static double ROTATE_180 = Math.toRadians(180);
 
   private Main               m;
   private Options            o;
@@ -743,7 +744,7 @@ public class Generator {
     }
     else
     {
-      throw new IllegalArgumentException("degree must be a mutiple of 90�!");
+      throw new IllegalArgumentException("degree must be a mutiple of 90°!");
     }
 
     // Return a new Image
