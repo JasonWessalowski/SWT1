@@ -743,20 +743,6 @@ public class Generator {
       width = image.getHeight(null); // swap
       height = image.getWidth(null);
     }
-    else if (rotate == Generator.ROTATE_M90)
-    {
-      transform.translate(0, width);
-      transform.rotate(Generator.ROTATE_M90);
-      width = image.getHeight(); // swap
-      height = image.getWidth();
-    }
-    else if (rotate == Generator.ROTATE_M270)
-    {
-      transform.translate(height, 0);
-      transform.rotate(Generator.ROTATE_M270);
-      width = image.getHeight();
-      height = image.getWidth();
-    }
     else
     {
       throw new IllegalArgumentException("degree must be a mutiple of 90°!");
