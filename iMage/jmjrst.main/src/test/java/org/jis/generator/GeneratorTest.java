@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import javax.imageio.ImageIO;
 
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GeneratorTest {
@@ -77,6 +80,8 @@ public class GeneratorTest {
 			
 		}
 
+		bufferedImage = editedImage;
+
 	}
 	
 	@Test
@@ -99,6 +104,8 @@ public class GeneratorTest {
 			}
 			
 		}
+
+		bufferedImage = editedImage;
 
 	}
 	
@@ -124,6 +131,8 @@ public class GeneratorTest {
 			
 		}
 
+		bufferedImage = editedImage;
+
 	}
 
 	@Test
@@ -146,6 +155,32 @@ public class GeneratorTest {
 				
 			}
 			
+		}
+
+		bufferedImage = editedImage;
+
+	}
+
+	@After
+	public void tearDown() {
+
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd_HH.mm.ss.SSS");
+		String dateInfo = sdf.format(date);
+		File product = new File("target/test/image" + "_rotated_" + sdf.format(date) + ".jpg");
+
+		if (bufferedImage != null) {
+			
+			try {
+
+				ImageIO.write(bufferedImage, "jpg", product);
+
+			} catch (IOException e) {
+
+				fail(e.getMessage());
+
+			}
+		
 		}
 
 	}
