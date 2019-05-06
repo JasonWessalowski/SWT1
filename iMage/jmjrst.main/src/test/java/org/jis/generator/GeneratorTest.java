@@ -16,6 +16,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/*
+ * Für Aufgabe 2
+ */
 public class GeneratorTest {
 
 	Generator generator;
