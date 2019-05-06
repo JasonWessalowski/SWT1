@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /*
@@ -23,6 +24,19 @@ public class GeneratorTest {
 
 	Generator generator;
 	BufferedImage bufferedImage;
+	
+	@BeforeClass
+	public static void beforeClassSetUp() {
+		
+		File directory = new File("target/test");
+		
+		for (File file : directory.listFiles()) {
+			
+			file.delete();
+			
+		}
+		
+	}
 	
 	@Before
 	public void setUp() {
