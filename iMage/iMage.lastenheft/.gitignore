@@ -32,3 +32,5 @@
 *.synctex.gz
 *.tdo
 *.toc
+*.tex
+*.pdf
