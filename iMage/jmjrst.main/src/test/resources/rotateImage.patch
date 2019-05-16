@@ -1,25 +1,25 @@
 diff --git a/iMage/jmjrst.main/src/main/java/org/jis/generator/Generator.java b/iMage/jmjrst.main/src/main/java/org/jis/generator/Generator.java
-index 7e4c098..0cebcd5 100644
+index 4309b7b..48399b1 100755
 --- a/iMage/jmjrst.main/src/main/java/org/jis/generator/Generator.java
 +++ b/iMage/jmjrst.main/src/main/java/org/jis/generator/Generator.java
-@@ -658,15 +658,17 @@ public class Generator {
-     int width = image.getWidth(null);
-     int height = image.getHeight(null);
- 
-+    // SWT1 - Uebungsblatt 1 A2g
-+    double positiveRotate = rotate;
-     if (rotate < 0) {
--      rotate += Math.toRadians(360);
-+      positiveRotate += Math.toRadians(360);
-     }
--    if (rotate == Generator.ROTATE_90) {
-+    if (positiveRotate == Generator.ROTATE_90) {
-       transform.translate(height, 0);
-       transform.rotate(Generator.ROTATE_90);
-       width = image.getHeight(); // swap
-       height = image.getWidth();
--    } else if (rotate == Generator.ROTATE_270) {
-+    } else if (positiveRotate == Generator.ROTATE_270) {
-       transform.translate(0, width);
-       transform.rotate(Generator.ROTATE_270);
+@@ -743,6 +743,20 @@
        width = image.getHeight(null); // swap
+       height = image.getWidth(null);
+     }
++    else if (rotate == Generator.ROTATE_M90)
++    {
++      transform.translate(0, width);
++      transform.rotate(Generator.ROTATE_M90);
++      width = image.getHeight(); // swap
++      height = image.getWidth();
++    }
++    else if (rotate == Generator.ROTATE_M270)
++    {
++      transform.translate(height, 0);
++      transform.rotate(Generator.ROTATE_M270);
++      width = image.getHeight();
++      height = image.getWidth();
++    }
+     else
+     {
+       throw new IllegalArgumentException("degree must be a mutiple of 90°!");
