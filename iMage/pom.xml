@@ -11,7 +11,6 @@
   <artifactId>iMage</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>iMage</name>
-  <description>Maven-Projekt iMage für das Übungsblatt 1 Aufgabe 1 in Softwaretechnik I.</description>
   
   <repositories>
 	<repository>
@@ -22,5 +21,7 @@
   
   <modules>
   	<module>jmjrst.main</module>
+  	<module>iMage.HDrize</module>
+  	<module>iMage.HDrize-cli</module>
   </modules>
 </project>
