@@ -9,8 +9,6 @@ import org.iMage.HDrize.base.matrix.IMatrix;
  */
 public final class Matrix implements IMatrix {
 
-	private int row;
-	private int col;
 	private double[][] content;
 
   /**
@@ -21,8 +19,6 @@ public final class Matrix implements IMatrix {
    */
   public Matrix(IMatrix mtx) {
 
-	  this.row = mtx.rows();
-	  this.col = mtx.cols();
 	  this.content = mtx.copy();
 
   }
@@ -63,14 +59,14 @@ public final class Matrix implements IMatrix {
   @Override
   public int rows() {
 
-	  return this.row;
+	  return this.content.length;
 
   }
 
   @Override
   public int cols() {
 
-	  return this.col;
+	  return this.content[0].length;
 
   }
 
