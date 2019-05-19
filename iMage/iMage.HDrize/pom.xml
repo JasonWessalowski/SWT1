@@ -8,8 +8,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>iMage.HDrize</artifactId>
+  	<artifactId>2048877</artifactId>
+  	<groupId>swt1.ub1.a3</groupId>
+  
     <dependencies>
         <dependency>
             <groupId>swt1</groupId>
