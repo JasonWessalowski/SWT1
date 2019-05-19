@@ -48,6 +48,31 @@ public final class Matrix implements IMatrix {
 	  this.content = new double[rows][cols];
 
   }
+  
+  /**
+   * Print given matrix in appropriate format.
+   */
+  public void print() {
+	  
+	  for (int row = 0; row < this.rows(); row++) {
+		  
+		  for (int col = 0; col < this.cols(); col++) {
+			  
+			  if (col == this.cols() - 1) {
+
+				  System.out.println(this.get(row, col));
+				  
+			  } else {
+				  
+				  System.out.print(this.get(row, col) + " ");
+				  
+			  }
+			  
+		  }
+		  
+	  }
+	  
+  }
 
   @Override
   public double[][] copy() {
