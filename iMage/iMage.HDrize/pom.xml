@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
   	<artifactId>2048877</artifactId>
-  	<groupId>swt1.ub4.a4</groupId>
+  	<groupId>swt1.ub2.a4</groupId>
   
     <dependencies>
         <dependency>
