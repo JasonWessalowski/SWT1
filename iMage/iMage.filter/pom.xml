@@ -7,4 +7,12 @@
     </parent>
   	<artifactId>2048877</artifactId>
   	<groupId>swt1.ub2.a6</groupId>
+  	
+  	<dependencies>
+        <dependency>
+            <groupId>swt1</groupId>
+            <artifactId>iMage.HDrize.base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+	</dependencies>
 </project>
