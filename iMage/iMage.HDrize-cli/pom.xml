@@ -16,23 +16,27 @@
   				<plugin>
   					<groupId>org.apache.maven.plugins</groupId>
   					<artifactId>maven-jar-plugin</artifactId>
+  					<configuration>
+  						<archive>
+  							<manifest>
+  								<addClasspath>true</addClasspath>
+  								<classpathPrefix>bibliothek/</classpathPrefix>
+  							</manifest>
+  						</archive>
+  					</configuration>
+  				</plugin>
+  				<plugin>
+  					<groupId>org.apache.maven.plugins</groupId>
+  					<artifactId>maven-dependency-plugin</artifactId>
   					<executions>
   						<execution>
-  							<id>copy-dependencies</id>
+  							<id>copy-dependency</id>
   							<phase>package</phase>
   							<goals>
-  								<goal>copy-dependecies</goal>
+  								<goal>copy-dependencies</goal>
   							</goals>
   							<configuration>
-  								<archive>
-  									<manifest>
-  										<addClasspath>true</addClasspath>
-  										<classpathPrefix>bibliothek/</classpathPrefix>
-  									</manifest>
-  								</archive>
-  								<outputDirectory>
-  									${project.build.directory}/bibliothek
-  								</outputDirectory>
+  								<outputDirectory>${project.build.directory}/bibliothek</outputDirectory>
   							</configuration>
   						</execution>
   					</executions>
