@@ -56,7 +56,7 @@ public class HDRCombine implements IHDRCombine {
 	  float[][] result = new float[width][height];
 	  
 	  // Bring array of weights.
-	  HDRCombine hdrCombine = null;
+	  HDRCombine hdrCombine = new HDRCombine();
 	  float[] weights = hdrCombine.calculateWeights();
 	  
 	  // Put exposure time in appropriate array.
