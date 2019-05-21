@@ -8,7 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>2048877</artifactId>
-	<groupId>swt1.ub2.a4</groupId>
+	<groupId>swt1.ub2.a5</groupId>
 	
 	<build>
   		<pluginManagement>
@@ -16,14 +16,26 @@
   				<plugin>
   					<groupId>org.apache.maven.plugins</groupId>
   					<artifactId>maven-jar-plugin</artifactId>
-  					<configuration>
-  						<archive>
-  							<manifest>
-  								<mainClass>org.jis.Main</mainClass>
-  								<addClasspath>true</addClasspath>
-  							</manifest>
-  						</archive>
-  					</configuration>
+  					<executions>
+  						<execution>
+  							<id>copy-dependencies</id>
+  							<phase>package</phase>
+  							<goals>
+  								<goal>copy-dependecies</goal>
+  							</goals>
+  							<configuration>
+  								<archive>
+  									<manifest>
+  										<addClasspath>true</addClasspath>
+  										<classpathPrefix>bibliothek/</classpathPrefix>
+  									</manifest>
+  								</archive>
+  								<outputDirectory>
+  									${project.build.directory}/bibliothek
+  								</outputDirectory>
+  							</configuration>
+  						</execution>
+  					</executions>
   				</plugin>
   			</plugins>
   		</pluginManagement>
@@ -31,8 +43,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>swt1</groupId>
-			<artifactId>iMage.HDrize.dummy</artifactId>
+  			<groupId>swt1.ub4.a4</groupId>
+  			<artifactId>2048877</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
