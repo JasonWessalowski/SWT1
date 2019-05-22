@@ -47,8 +47,8 @@
 	
 	<dependencies>
 		<dependency>
-  			<groupId>swt1.ub2.a4</groupId>
-  			<artifactId>2048877</artifactId>
+  			<groupId>swt1</groupId>
+  			<artifactId>iMage.HDrize.dummy</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
