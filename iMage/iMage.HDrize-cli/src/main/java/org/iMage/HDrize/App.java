@@ -9,15 +9,18 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.imaging.ImageReadException;
-import org.iMage.HDrize.base.ICameraCurve;
 import org.iMage.HDrize.base.images.EnhancedImage;
 import org.iMage.HDrize.base.images.HDRImageIO.ToneMapping;
+import org.iMage.HDrize.base.matrix.IMatrix;
 import org.iMage.HDrize.base.matrix.IMatrixCalculator;
-import org.iMage.HDrize.matrix.Matrix;
 import org.iMage.HDrize.matrix.MatrixCalculator;
-import org.iMage.HDrize.base.images.HDRImageIO;
 
 
 /**
@@ -142,7 +145,7 @@ public final class App {
     
     // Initialize necessary objects.
     HDrize hdRize = new HDrize();
-    IMatrixCalculator<Matrix> mtxCalc = new MatrixCalculator();
+    IMatrixCalculator<IMatrix> mtxCalc = new MatrixCalculator();
     
     
     // Create HDR Image
