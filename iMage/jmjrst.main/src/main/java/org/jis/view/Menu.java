@@ -23,6 +23,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import org.iMage.plugins.PluginForJmjrst;
+import org.iMage.plugins.PluginManagement;
 import org.jis.Main;
 import org.jis.listner.MenuListner;
 
@@ -149,6 +151,29 @@ public class Menu extends JMenuBar {
     look_gtk.addActionListener(al);
     update_check.addActionListener(al);
 
+    // List plugins in the submenus start_plugin and configure_plugin.
+    for (PluginForJmjrst plugin : PluginManagement.getPlugins()) {
+    	// Receive main application for plugin use.
+    	plugin.init(m);
+    	
+    	JMenuItem item_start = new JMenuItem(plugin.getName());
+    	start_plugin.add(item_start);
+    	// Listener will run plugin when triggered.
+    	item_start.addActionListener(l -> plugin.run());
+    	
+    	// Only add the plugin to the list of configurable plugins, if it is.
+    	if (plugin.isConfigurable()) {
+    		
+    		JMenuItem item_config = new JMenuItem(plugin.getName());
+    		configure_plugin.add(item_config);
+    		// Listener will open configuration dialogue when triggered.
+        	item_config.addActionListener(l -> plugin.configure());
+    		// Made two instances of the same item, so there can be two different
+        	// ActionListeners, that can perform different functionalities.
+    	}
+    	
+    }
+    
     UIManager.LookAndFeelInfo uii[] = UIManager.getInstalledLookAndFeels();
     for (int i = 0; i < uii.length; i++)
     {
