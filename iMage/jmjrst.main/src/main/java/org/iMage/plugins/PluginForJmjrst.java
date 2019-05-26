@@ -42,7 +42,14 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
 
   @Override 
   public int compareTo(PluginForJmjrst otherPlugin) {
-    //TODO: implement me!
-    return 0;
+    
+	  // Save the names of the two plug-ins
+	  String thisString = this.getName();
+	  String otherString = otherPlugin.getName();
+	  
+	  // Returns negative integer when this plug-in has a shorter name, positive when
+	  // the opposite is true and 0 if they are equal
+	  return thisString.length() - otherString.length();
+	  
   }
 }
