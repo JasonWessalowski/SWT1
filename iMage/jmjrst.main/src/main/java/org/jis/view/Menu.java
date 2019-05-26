@@ -156,18 +156,18 @@ public class Menu extends JMenuBar {
     	// Receive main application for plugin use.
     	plugin.init(m);
     	
-    	JMenuItem item_start = new JMenuItem(plugin.getName());
-    	start_plugin.add(item_start);
+    	JMenuItem itemStart = new JMenuItem(plugin.getName());
+    	start_plugin.add(itemStart);
     	// Listener will run plugin when triggered.
-    	item_start.addActionListener(l -> plugin.run());
+    	itemStart.addActionListener(l -> plugin.run());
     	
     	// Only add the plugin to the list of configurable plugins, if it is.
     	if (plugin.isConfigurable()) {
     		
-    		JMenuItem item_config = new JMenuItem(plugin.getName());
-    		configure_plugin.add(item_config);
+    		JMenuItem itemConfig = new JMenuItem(plugin.getName());
+    		configure_plugin.add(itemConfig);
     		// Listener will open configuration dialogue when triggered.
-        	item_config.addActionListener(l -> plugin.configure());
+        	itemConfig.addActionListener(l -> plugin.configure());
     		// Made two instances of the same item, so there can be two different
         	// ActionListeners, that can perform different functionalities.
     	}
