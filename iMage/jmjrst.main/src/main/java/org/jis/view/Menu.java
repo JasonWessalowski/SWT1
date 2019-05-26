@@ -49,6 +49,9 @@ public class Menu extends JMenuBar {
   public JMenuItem          look_motif;
   public JMenuItem          look_gtk;
   public JMenuItem          update_check;
+  // New sub menus for pugins
+  public JMenuItem			start_plugin;
+  public JMenuItem			configure_plugin;
 
   /**
    * @param m
@@ -91,7 +94,17 @@ public class Menu extends JMenuBar {
     update_check = new JMenuItem(m.mes.getString("Menu.15"));
     url = ClassLoader.getSystemResource("icons/system-software-update.png");
     update_check.setIcon(new ImageIcon(url));
-
+    
+    // Initialize the two new submenus
+    start_plugin = new JMenuItem("Start Plug-In");
+    url = ClassLoader.getSystemResource("icons/media-playback-start.png");
+    start_plugin.setIcon(new ImageIcon(url));
+    
+    configure_plugin = new JMenuItem("Configure Plug-In");
+    url = ClassLoader.getSystemResource("icons/preferences-system.png");
+    configure_plugin.setIcon(new ImageIcon(url));
+    //
+    
     look_windows = new JMenuItem(m.mes.getString("Menu.8"));
     look_windows_classic = new JMenuItem(m.mes.getString("Menu.9"));
     look_nimbus = new JMenuItem(m.mes.getString("Menu.16"));
@@ -110,6 +123,11 @@ public class Menu extends JMenuBar {
     datei.add(exit);
     option.add(optionen_look);
     option.add(set_quality);
+    // Add a seperator line and the two submenus to user interface
+    option.addSeparator();
+    option.add(start_plugin);
+    option.add(configure_plugin);
+    //
     option.addSeparator();
     option.add(update_check);
     about.add(info);
@@ -123,6 +141,10 @@ public class Menu extends JMenuBar {
     zippen.addActionListener(al);
     gallerie.addActionListener(al);
     set_quality.addActionListener(al);
+    // Adding listeners for the two submenus
+    start_plugin.addActionListener(al);
+    configure_plugin.addActionListener(al);
+    //
     info.addActionListener(al);
     look_windows.addActionListener(al);
     look_windows_classic.addActionListener(al);
