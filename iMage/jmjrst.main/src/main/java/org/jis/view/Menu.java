@@ -49,9 +49,6 @@ public class Menu extends JMenuBar {
   public JMenuItem          look_motif;
   public JMenuItem          look_gtk;
   public JMenuItem          update_check;
-  // New sub menus for pugins
-  public JMenuItem			start_plugin;
-  public JMenuItem			configure_plugin;
 
   /**
    * @param m
@@ -63,7 +60,11 @@ public class Menu extends JMenuBar {
     JMenu option = new JMenu(m.mes.getString("Menu.1"));
     JMenu optionen_look = new JMenu(m.mes.getString("Menu.2"));
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
-
+    // New sub menus for pugins
+    JMenu start_plugin = new JMenu("Start Plug-In");
+    JMenu configure_plugin = new JMenu("Configure Plug-In");
+    //
+    
     gener = new JMenuItem(m.mes.getString("Menu.4"));
     URL url = ClassLoader.getSystemResource("icons/media-playback-start.png");
     gener.setIcon(new ImageIcon(url));
@@ -95,12 +96,10 @@ public class Menu extends JMenuBar {
     url = ClassLoader.getSystemResource("icons/system-software-update.png");
     update_check.setIcon(new ImageIcon(url));
     
-    // Initialize the two new submenus
-    start_plugin = new JMenuItem("Start Plug-In");
+    // Set icons for the two submenus
     url = ClassLoader.getSystemResource("icons/media-playback-start.png");
     start_plugin.setIcon(new ImageIcon(url));
     
-    configure_plugin = new JMenuItem("Configure Plug-In");
     url = ClassLoader.getSystemResource("icons/preferences-system.png");
     configure_plugin.setIcon(new ImageIcon(url));
     //
@@ -141,10 +140,6 @@ public class Menu extends JMenuBar {
     zippen.addActionListener(al);
     gallerie.addActionListener(al);
     set_quality.addActionListener(al);
-    // Adding listeners for the two submenus
-    start_plugin.addActionListener(al);
-    configure_plugin.addActionListener(al);
-    //
     info.addActionListener(al);
     look_windows.addActionListener(al);
     look_windows_classic.addActionListener(al);
