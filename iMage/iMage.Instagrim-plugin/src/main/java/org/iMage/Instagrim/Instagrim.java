@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -126,7 +127,14 @@ public class Instagrim extends PluginForJmjrst {
 	@Override
 	public void run() {
 		
+		// Get all the pre-written comments.
+		String[] comments = getComments();
 		
+		// Select random number for comment.
+		Random random = new Random();
+		int number = random.nextInt(comments.length);
+		
+		System.out.println(comments[number]);
 		
 	}
 
