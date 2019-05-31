@@ -5,6 +5,8 @@ import org.jis.Main;
 
 public class Instagrim extends PluginForJmjrst {
 
+	private Main jmjrst;
+	
 	@Override
 	public void configure() {
 		// TODO Auto-generated method stub
@@ -20,8 +22,15 @@ public class Instagrim extends PluginForJmjrst {
 
 	@Override
 	public void init(Main arg0) {
-		// TODO Auto-generated method stub
 		
+		// Assign argument to the class attribute jmjrst.
+		this.jmjrst = arg0;
+		// Retrieve name of the user.
+		String name = System.getProperty("user.name");
+		// Give out message.
+		System.err.println("iMage: Der Bildverschönerer, dem Influencer vertrauen!"
+							+ "Jetzt bist auch Du Teil unseres Teams, " + name + ".");
+
 	}
 
 	@Override
