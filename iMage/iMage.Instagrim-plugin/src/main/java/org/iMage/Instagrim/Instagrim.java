@@ -1,15 +1,98 @@
 package org.iMage.Instagrim;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import org.iMage.plugins.PluginForJmjrst;
 import org.jis.Main;
 
+/**
+ * Plug-In to generate positive comments about iMage.
+ * 
+ * @author Jason Wessalowski
+ *
+ */
 public class Instagrim extends PluginForJmjrst {
 
 	private Main jmjrst;
 	
 	@Override
 	public void configure() {
-		// TODO Auto-generated method stub
+		
+		// Get all pre-written comments.
+		String[] comments = getComments();
+		// Prepare message.
+		String message = "";
+		
+		for (String string : comments) {
+			
+			message += string + "\n";
+			
+		}
+		
+		JOptionPane.showMessageDialog(this.jmjrst, message, "Kommentarliste", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+	
+	private static String[] getComments() {
+		
+		// Count number of comments.
+		int number = 0;
+		
+		// Prepare array for comments.
+		String[] comments = new String[0];
+		
+		// The name of the file to open.
+		String fileName = "src/main/resources/kommentare.txt";
+
+		// This will reference one line at a time
+		String line = null;
+
+		try {
+			// FileReader reads text files in the default encoding.
+			FileReader fileReader = new FileReader(fileName);
+
+		    // Always wrap FileReader in BufferedReader.
+		    BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+		    // Count number of comments.
+		    while (bufferedReader.readLine() != null) {
+            	
+		    	number++;
+		                
+		    }  
+		    
+		    // Update size of comments array.
+		    comments = new String[number];
+		    
+		    int i = 0;
+		    
+		    // Assign comments to array.
+		    while ((line = bufferedReader.readLine()) != null) {
+		            	
+		    	comments[i] += "\"" + line + "\"";
+		    	i++;
+		                
+		    }   
+
+		// Always close files.
+		bufferedReader.close();         
+		    
+		} catch (FileNotFoundException e) {
+		        	
+			System.out.println("Unable to open file '" + fileName + "'");  
+		            
+		} catch (IOException e) {
+		        	
+		    System.out.println("Error reading file '" + fileName + "'");                  
+
+		}
+		
+		return comments;
 		
 	}
 
@@ -42,7 +125,8 @@ public class Instagrim extends PluginForJmjrst {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
+		
 		
 	}
 
