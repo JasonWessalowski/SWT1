@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import org.iMage.plugins.PluginForJmjrst;
 import org.jis.Main;
+import org.kohsuke.MetaInfServices;
 
 /**
  * Plug-In to generate positive comments about iMage.
@@ -17,6 +18,7 @@ import org.jis.Main;
  * @author Jason Wessalowski
  *
  */
+@MetaInfServices
 public class Instagrim extends PluginForJmjrst {
 
 	private Main jmjrst;
