@@ -1,199 +1,155 @@
 package org.iMage.HDrize.matrix;
 
+import org.iMage.HDrize.base.matrix.IMatrix;
 import org.iMage.HDrize.base.matrix.IMatrixCalculator;
 
 /**
- * Implementation of inverting, multiplying and transposition as methods for matrices.
- * 
- * @author Jason Wessalowski
+ * This class represents a simple implementation of {@link IMatrixCalculator} for {@link Matrix}.
+ *
+ * @author Dominik Fuchss
  *
  */
 public class MatrixCalculator implements IMatrixCalculator<Matrix> {
 
   @Override
   public Matrix inverse(Matrix mtx) {
-
-	  // Create new matrix of the same size as input matrix.
-	  Matrix inverse = new Matrix(mtx.rows(), mtx.cols());
-	  // Calculate the determinant of the input matrix.
-	  double determinant = determinant(mtx);
-	  
-	  // Get inverse of determinant, if possible.
-	  double factor = 1.0;
-	  
-	  try {
-		  
-		  factor = 1 / determinant;
-		  
-	  } catch (ArithmeticException e) {
-		  
-		  System.out.println(e.getMessage());
-		  
-	  }
-	  
-	  // Calculate the inverse matrix by multiplying the adjugate matrix with the inverse of the determinant.
-	  for (int row = 0; row < mtx.rows(); row++) {
-		  
-		  for (int col = 0; col < mtx.cols(); col++) {
-			  
-			  inverse.set(row, col, factor * Math.pow(-1, row + col) * determinant(incision(mtx, row, col)));
-			  
-		  }
-		  
-	  }
-	  
-	  return inverse;
-
+    double[][] inverse = this.inverse(mtx.copy());
+    if (inverse != null) {
+      return new Matrix(inverse);
+    }
+    return null;
   }
-  
-  /**
-   * Calculates the determinant of a matrix.
-   * 
-   * @param matrix matrix Relevant matrix.
-   * @return Determinant of given matrix.
-   * @throws UnsupportedOperationException Exception in case the matrix is not quadratic.
-   */
-  public static double determinant(Matrix matrix) throws UnsupportedOperationException {
-	  
-	  // Don't proceed if matrix isn't quadratic.
-	  if (matrix.rows() != matrix.cols()) {
 
-		  throw new UnsupportedOperationException("Given matrix was not quadratic!");
-		  
-	  }
-	  
-	  double result = 0.0;
-	  
-	  // Return only value when matrix is size 1x1.
-	  if (matrix.rows() == 1) {
-		  
-		  return matrix.get(0, 0);
-		  
-	  }
-	  
-	  // Calculate determinant via recursion and the Laplace equation.
-	  for (int col = 0; col < matrix.cols(); col++) {
-		  
-		  result += Math.pow(-1, col) * matrix.get(0, col) * determinant(incision(matrix, 0, col));
-		  
-	  }
-	  
-	  return result;
-	  
+  // Fast Algorithm:
+  // See https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/linearalgebra/MatrixInverse.java
+  private double[][] inverse(double[][] matrix) {
+    if (matrix.length != matrix[0].length) {
+      return null;
+    }
+    int n = matrix.length;
+    double[][] augmented = new double[n][n * 2];
+    for (int r = 0; r < n; r++) {
+      for (int c = 0; c < n; c++) {
+        augmented[r][c] = matrix[r][c];
+      }
+      augmented[r][r + n] = 1;
+    }
+    this.solve(augmented);
+    double[][] inv = new double[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        inv[i][j] = augmented[i][j + n];
+      }
+    }
+
+    IMatrix product = this.multiply(new Matrix(matrix), new Matrix(inv));
+    if (!this.isIdentity(product)) {
+      return null;
+    }
+
+    return inv;
   }
-  
-  /**
-   * Removes selected row and column from matrix.
-   * 
-   * @param matrix Given matrix to edit.
-   * @param rowRmv Selected row.
-   * @param colRmv Selected column.
-   * @return Same matrix just without the selected row and column.
-   */
-  public static Matrix incision(Matrix matrix, int rowRmv, int colRmv) {
-	  
-	  // Create empty matrix with one row and column less.
-	  Matrix result = new Matrix(matrix.rows() - 1, matrix.cols() - 1);
-	  
-	  // Insert the value of input matrix to the same spot of the new matrix until you reach the cross section.
-	  // In that case insert the value of the following spot, as to skip the cross section.
-	  for (int row = 0; row < result.rows(); row++) {
-		  
-		  for (int col = 0; col < result.cols(); col++) {
-			  
-			  if (col >= colRmv) {
-				  
-				  result.set(row, col, matrix.get(row, col + 1));
-				  
-			  } else if (row >= rowRmv) {
-				  
-				  result.set(row, col, matrix.get(row + 1, col));
-				  
-			  }
-			  
-			  result.set(row, col, matrix.get(row, col));
-			  
-		  }
-		  
-	  }
-	  
-	  return result;
-	  
+
+  private boolean isIdentity(IMatrix mtx) {
+    if (mtx.cols() != mtx.rows()) {
+      return false;
+    }
+
+    for (int r = 0; r < mtx.rows(); r++) {
+      for (int c = 0; c < mtx.cols(); c++) {
+        if (r == c && Math.abs(mtx.get(r, c) - 1) >= 1E-8) {
+          return false;
+        } else if (r != c && Math.abs(mtx.get(r, c)) >= 1E-8) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Solves a system of linear equations as an augmented matrix
+  // with the rightmost column containing the constants. The answers
+  // will be stored on the rightmost column after the algorithm is done.
+  // NOTE: make sure your matrix is consistent and does not have multiple
+  // solutions before you solve the system if you want a unique valid answer.
+  // Time Complexity: O(r²c)
+  // See https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/linearalgebra/MatrixInverse.java
+  private void solve(double[][] augmentedMatrix) {
+    int rows = augmentedMatrix.length;
+    int cols = augmentedMatrix[0].length;
+    int lead = 0;
+    for (int r = 0; r < rows; r++) {
+
+      // Find leading column ..
+      if (lead >= cols) {
+        break;
+      }
+      int i = r;
+      while (Math.abs(augmentedMatrix[i][lead]) < 1E-8) {
+        if (++i == rows) {
+          i = r;
+          if (++lead == cols) {
+            return;
+          }
+        }
+      }
+
+      this.swap(augmentedMatrix, r, i);
+
+      double lv = augmentedMatrix[r][lead];
+      for (int j = 0; j < cols; j++) {
+        augmentedMatrix[r][j] /= lv;
+      }
+
+      for (i = 0; i < rows; i++) {
+        if (i != r) {
+          lv = augmentedMatrix[i][lead];
+          for (int j = 0; j < cols; j++) {
+            augmentedMatrix[i][j] -= lv * augmentedMatrix[r][j];
+          }
+        }
+      }
+      lead++;
+    }
+  }
+
+  private void swap(double[][] mtx, int i, int j) {
+    double[] tmp = mtx[i];
+    mtx[i] = mtx[j];
+    mtx[j] = tmp;
   }
 
   @Override
-  public Matrix multiply(Matrix a, Matrix b) throws UnsupportedOperationException {
+  public Matrix multiply(Matrix a, Matrix b) {
+    if (a.cols() != b.rows()) {
+      return null;
+    }
 
-	  // Check if the number of columns in a are identical to the number of rows in b.
-	  if (a.cols() != b.rows()) {
-		  
-		  throw new UnsupportedOperationException("Number of columns of first matrix doesn't"
-				  								+ "match number of rows of second matrix!");
-		  
-	  }
-	  
-	  // Create new empty matrix to save the results.
-	  int rows = a.rows();
-	  int cols = b.cols();
-	  Matrix product = new Matrix(rows, cols);
-	  
-	  // Multiply products to corresponding position and summarize all of them.
-	  // Then insert them to their appropriate spot.
-	  for (int row = 0; row < product.rows(); row++) {
-		  
-		  for (int col = 0; col < product.cols(); col++) {
-			  
-			  product.set(row, col, summationSeries(a, b, row, col));
-			  
-		  }
-		  
-	  }
-	  
-	  return product;
+    Matrix res = new Matrix(a.rows(), b.cols());
 
-  }
-  
-  /**
-   * Method to help with matrix multiplication by multiplying and adding components.
-   * 
-   * @param row Row of the currently handled matrix value.
-   * @param col Column of the currently handled matrix value.
-   * @return Product and sum of relevant components for the current spot in the product matrix.
-   */
-  private static double summationSeries(Matrix a, Matrix b, int row, int col) {
-	  
-	  double sum = 0;
-	  
-	  // Multiply products to corresponding position and summarize all of them.
-	  for (int i = 0; i < a.cols(); i++) {
-		  
-		  sum += a.get(row, i) * b.get(i, col);
-		  
-	  }
-	  
-	  return sum;
-	  
+    for (int c = 0; c < a.rows(); c++) {
+      for (int d = 0; d < b.cols(); d++) {
+        double sum = 0;
+        for (int k = 0; k < b.rows(); k++) {
+          sum = sum + a.get(c, k) * b.get(k, d);
+        }
+
+        res.set(c, d, sum);
+      }
+    }
+    return res;
   }
 
   @Override
   public Matrix transpose(Matrix mtx) {
-
-	  // Create new empty matrix with possibly new size to save results.
-	  Matrix result = new Matrix(mtx.cols(), mtx.rows());
-	  
-	  // Swap values with their counterpart for transposition.
-	  for (int row = 0; row < mtx.rows(); row++) {
-		  
-		  for (int col = 0; col < mtx.cols(); col++) {
-			  
-			  result.set(row, col, mtx.get(col, row));
-			  
-		  }
-		  
-	  }
-	  
-	  return result;
-
+    Matrix res = new Matrix(mtx.cols(), mtx.rows());
+    for (int r = 0; r < res.rows(); r++) {
+      for (int c = 0; c < res.cols(); c++) {
+        res.set(r, c, mtx.get(c, r));
+      }
+    }
+    return res;
   }
 
 }

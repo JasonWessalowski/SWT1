@@ -93,7 +93,8 @@ public class Main extends JFrame {
     init();
   }
 
-  private void init() {
+  private void init()
+  {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices();
     GraphicsDevice gd = gs[0];
@@ -198,15 +199,13 @@ public class Main extends JFrame {
 
   public static void main(String[] args)
   {
-    if (args.length == 0) {
-    	new Main();
-    } else
+    if (args.length == 0) new Main();
+    else
     {
       Messages mes = new Messages(Locale.ENGLISH);
       if (args.length == 1 && args[0].equalsIgnoreCase(mes.getString("Main.3")))
       {
-        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5")
-        + System.getProperty("line.separator") + mes.getString("Main.7"));
+        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5") + System.getProperty("line.separator") + mes.getString("Main.7"));
         System.out.println(mes.getString("Main.8"));
         System.out.println(mes.getString("Main.9"));
         System.out.println();

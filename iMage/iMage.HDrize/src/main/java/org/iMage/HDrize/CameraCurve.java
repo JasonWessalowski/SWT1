@@ -17,6 +17,12 @@ import org.iMage.HDrize.matrix.Matrix;
 import org.ojalgo.matrix.decomposition.SingularValue;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
 
+/**
+ * A implementaion of {@link ICameraCurve}.
+ *
+ * @author Dominik Fuchss
+ *
+ */
 public class CameraCurve implements ICameraCurve {
   private static final int CHANNELS = 3;
   private static final int SIZE = 256;
@@ -57,8 +63,9 @@ public class CameraCurve implements ICameraCurve {
     this.respCurves = new IMatrix[CameraCurve.CHANNELS];
     for (int channel = 0; channel < CameraCurve.CHANNELS; channel++) {
       this.respCurves[channel] = new Matrix(CameraCurve.SIZE, 1);
-      for (int n = 0; n < CameraCurve.SIZE; n++)
+      for (int n = 0; n < CameraCurve.SIZE; n++) {
         this.respCurves[channel].set(n, 0, n / ((double) CameraCurve.SIZE));
+      }
     }
 
     this.lambda = -1;
@@ -93,8 +100,9 @@ public class CameraCurve implements ICameraCurve {
   }
 
   private void calculate(int remainingTries) {
-    if (this.respCurves != null)
+    if (this.respCurves != null) {
       return;
+    }
 
     if (remainingTries <= 0) {
       this.respCurves = null;
@@ -122,36 +130,41 @@ public class CameraCurve implements ICameraCurve {
     }
 
     this.respCurves = new IMatrix[CameraCurve.CHANNELS];
-
+    
     for (int channel = 0; channel < CameraCurve.CHANNELS; channel++) {
-      this.calculateChannel(channel, x, y);
+       this.calculateChannel(channel, x, y);
     }
-    for (var rc : this.respCurves)
+    
+    for (var rc : this.respCurves) {
       if (rc == null) {
         this.respCurves = null;
         this.calculate(remainingTries - 1);
       }
+    }
+
   }
 
   private boolean calculateChannel(int channel, final int[] x, final int[] y) {
     System.out.println("Calculation for channel " + channel);
-    IMatrix[] AB = this.initAB(channel, x, y);
+    IMatrix[] mtxAB = this.initAB(channel, x, y);
 
-    var VSU = this.calcSingular(AB[0]);
+    var decompositionVSU = this.calcSingular(mtxAB[0]);
 
-    System.out.println("Starting inverse of M[" + VSU.S.rows() + "x" + VSU.S.cols() + "]");
+    System.out.println("Starting inverse of M[" + decompositionVSU.mtxS.rows() + "x"
+        + decompositionVSU.mtxS.cols() + "]");
     long t1 = System.currentTimeMillis();
-    Matrix SInverse = this.matrixCalc.inverse(VSU.S);
+    Matrix sInverse = this.matrixCalc.inverse(decompositionVSU.mtxS);
     long t2 = System.currentTimeMillis();
     System.out.println("InverseOfMatrix has finished in " + ((t2 - t1) / 1000F) + " seconds");
 
-    if (SInverse == null)
+    if (sInverse == null) {
       return false;
+    }
 
-    Matrix VSInverse = this.matrixCalc.multiply(VSU.V, SInverse);
-    Matrix UTranspose = this.matrixCalc.transpose(VSU.U);
-    Matrix result = this.matrixCalc.multiply(VSInverse, UTranspose);
-    result = this.matrixCalc.multiply(result, new Matrix(AB[1]));
+    Matrix mtxVSInverse = this.matrixCalc.multiply(decompositionVSU.mtxV, sInverse);
+    Matrix mtxUTranspose = this.matrixCalc.transpose(decompositionVSU.mtxU);
+    Matrix result = this.matrixCalc.multiply(mtxVSInverse, mtxUTranspose);
+    result = this.matrixCalc.multiply(result, new Matrix(mtxAB[1]));
 
     this.respCurves[channel] = result;
     System.out.println("Finished channel " + channel);
@@ -159,33 +172,42 @@ public class CameraCurve implements ICameraCurve {
 
   }
 
+  /**
+   * Calculate VSU decomposition.
+   *
+   * @param input
+   *          the matrix
+   * @return the decomposition
+   */
   protected SingularDecomposition calcSingular(IMatrix input) {
     var matrix = input.copy();
-    var A = PrimitiveDenseStore.FACTORY.makeZero(matrix.length, matrix[0].length);
-    for (int r = 0; r < A.countRows(); r++)
-      for (int c = 0; c < A.countColumns(); c++)
-        A.set(r, c, matrix[r][c]);
+    var mtxA = PrimitiveDenseStore.FACTORY.makeZero(matrix.length, matrix[0].length);
+    for (int r = 0; r < mtxA.countRows(); r++) {
+      for (int c = 0; c < mtxA.countColumns(); c++) {
+        mtxA.set(r, c, matrix[r][c]);
+      }
+    }
 
     long t1 = System.currentTimeMillis();
 
-    SingularValue<Double> svd = SingularValue.PRIMITIVE.make(A);
-    svd.compute(A);
+    SingularValue<Double> svd = SingularValue.PRIMITIVE.make(mtxA);
+    svd.compute(mtxA);
     long t2 = System.currentTimeMillis();
     System.out.println("SingularDecomposition has finished in " + ((t2 - t1) / 1000F) + " seconds");
 
-    var V = new Matrix(svd.getQ2().toRawCopy2D());
-    var S = new Matrix(svd.getD().toRawCopy2D());
-    var U = new Matrix(svd.getQ1().toRawCopy2D());
+    var mtxV = new Matrix(svd.getQ2().toRawCopy2D());
+    var mtxS = new Matrix(svd.getD().toRawCopy2D());
+    var mtxU = new Matrix(svd.getQ1().toRawCopy2D());
 
-    return new SingularDecomposition(V, S, U);
+    return new SingularDecomposition(mtxV, mtxS, mtxU);
   }
 
   private IMatrix[] initAB(int channel, final int[] x, final int[] y) {
-    IMatrix A = new Matrix(//
+    IMatrix mtxA = new Matrix(//
         this.samples * this.images.length + CameraCurve.SIZE + 1, //
         CameraCurve.SIZE + this.samples //
     );
-    IMatrix b = new Matrix(A.rows(), 1);
+    IMatrix b = new Matrix(mtxA.rows(), 1);
 
     int k = 0;
     for (int i = 0; i < this.samples; i++) {
@@ -195,25 +217,25 @@ public class CameraCurve implements ICameraCurve {
 
         double wij = this.getWeight(intensity);
 
-        A.set(k, intensity, wij);
-        A.set(k, CameraCurve.SIZE + i, -wij);
+        mtxA.set(k, intensity, wij);
+        mtxA.set(k, CameraCurve.SIZE + i, -wij);
         b.set(k, 0, wij * Math.log(this.images[j].getExposureTime()));
 
         k++;
       }
     }
 
-    A.set(k, CameraCurve.SIZE / 2, 1.0);
+    mtxA.set(k, CameraCurve.SIZE / 2, 1.0);
     k++;
 
     for (int i = 0; i < CameraCurve.SIZE - 2; i++) {
-      A.set(k, i, this.lambda * this.getWeight(i + 1));
-      A.set(k, i + 1, -2.f * this.lambda * this.getWeight(i + 1));
-      A.set(k, i + 2, this.lambda * this.getWeight(i + 1));
+      mtxA.set(k, i, this.lambda * this.getWeight(i + 1));
+      mtxA.set(k, i + 1, -2.f * this.lambda * this.getWeight(i + 1));
+      mtxA.set(k, i + 2, this.lambda * this.getWeight(i + 1));
       k++;
     }
 
-    return new IMatrix[] { A, b };
+    return new IMatrix[] { mtxA, b };
   }
 
   @Override
@@ -223,8 +245,9 @@ public class CameraCurve implements ICameraCurve {
 
   @Override
   public float[] getResponse(int[] color) {
-    if (this.respCurves == null)
+    if (this.respCurves == null) {
       return null;
+    }
 
     float[] response = new float[CameraCurve.CHANNELS];
 
@@ -241,19 +264,22 @@ public class CameraCurve implements ICameraCurve {
 
   @Override
   public void save(OutputStream os) throws IOException {
-    if (this.respCurves == null)
+    if (this.respCurves == null) {
       return;
+    }
     CurveWrapper[] data = new CurveWrapper[CameraCurve.CHANNELS];
-    for (int i = 0; i < CameraCurve.CHANNELS; i++)
+    for (int i = 0; i < CameraCurve.CHANNELS; i++) {
       data[i] = new CurveWrapper(this.respCurves[i]);
+    }
     ObjectOutputStream oos = new ObjectOutputStream(os);
     oos.writeObject(data);
     oos.flush();
   }
 
   private void load(InputStream is) throws ClassNotFoundException, IOException {
-    if (this.respCurves != null)
+    if (this.respCurves != null) {
       return;
+    }
     ObjectInputStream ois = new ObjectInputStream(is);
     CurveWrapper[] data = (CurveWrapper[]) ois.readObject();
 
@@ -272,19 +298,25 @@ public class CameraCurve implements ICameraCurve {
    */
   protected static final class SingularDecomposition {
 
-    private final Matrix V;
-    private final Matrix S;
-    private final Matrix U;
+    private final Matrix mtxV;
+    private final Matrix mtxS;
+    private final Matrix mtxU;
 
     private SingularDecomposition(Matrix v, Matrix s, Matrix u) {
-      this.V = v;
-      this.S = s;
-      this.U = u;
+      this.mtxV = v;
+      this.mtxS = s;
+      this.mtxU = u;
     }
 
   }
 
-  private static class CurveWrapper implements Serializable {
+  /**
+   * A wrapper of response curve for (de-) serializing.
+   *
+   * @author Dominik Fuchss
+   *
+   */
+  private static final class CurveWrapper implements Serializable {
     private static final long serialVersionUID = 3600716880375465583L;
     private double[][] data;
 

@@ -4,6 +4,7 @@ package org.iMage.plugins;
  * Abstract parent class for plug-ins for JMJRST
  *
  * @author Dominik Fuchss
+ *
  */
 public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
 
@@ -19,7 +20,7 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
    * as well.
    *
    * @param main
-   *     JMJRST main application
+   *          JMJRST main application
    */
   public abstract void init(org.jis.Main main);
 
@@ -40,16 +41,30 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
    */
   public abstract void configure();
 
-  @Override 
+  @Override
   public int compareTo(PluginForJmjrst otherPlugin) {
-    
-	  // Save the names of the two plug-ins
-	  String thisString = this.getName();
-	  String otherString = otherPlugin.getName();
-	  
-	  // Returns negative integer when this plug-in has a shorter name, positive when
-	  // the opposite is true and 0 if they are equal
-	  return thisString.length() - otherString.length();
-	  
+    return Integer.compare( //
+        this.getClass().getSimpleName().length(), //
+        otherPlugin.getClass().getSimpleName().length() //
+    );
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.getName() == null) ? 0 : this.getName().hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || this.getClass() != obj.getClass()) {
+      return false;
+    }
+    return this.getName().equals(((PluginForJmjrst) obj).getName());
   }
 }

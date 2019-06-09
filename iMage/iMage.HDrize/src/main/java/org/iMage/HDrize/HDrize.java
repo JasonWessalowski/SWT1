@@ -37,14 +37,15 @@ public class HDrize implements IHDrize<Matrix> {
   public HDRImage createHDR(EnhancedImage[] images, int samples, double lambda,
       IMatrixCalculator<Matrix> mtxCalc) {
 
-    var curve = this.createCurve( //
+    ICameraCurve curve = this.createCurve(//
         Objects.requireNonNull(images, "images cannot be null"), //
         samples, lambda, //
         Objects.requireNonNull(mtxCalc, "mtxCalc cannot be null") //
     );
 
-    if (curve == null)
+    if (curve == null) {
       return null;
+    }
 
     return this.combine.createHDR(curve, images);
   }
@@ -70,10 +71,12 @@ public class HDrize implements IHDrize<Matrix> {
 
   private ICameraCurve createCurve(EnhancedImage[] images, int samples, double lambda,
       IMatrixCalculator<Matrix> mtxCalc) {
-    if (lambda <= 0 || lambda > 100)
+    if (lambda <= 0 || lambda > 100) {
       throw new IllegalArgumentException("Lambda has to be in (0,100]");
-    if (samples < 1 || samples > 1000)
+    }
+    if (samples < 1 || samples > 1000) {
       throw new IllegalArgumentException("samples has to be in [1,1000]");
+    }
 
     CameraCurve cc = new CameraCurve(images, samples, lambda, mtxCalc);
     cc.calculate();
