@@ -26,5 +26,6 @@
   	<module>iMage.filter</module>
   	<module>iMage.Instagrim-plugin</module>
   	<module>iMage.bundle</module>
+  	<module>iMage.iCatcher</module>
   </modules>
 </project>
