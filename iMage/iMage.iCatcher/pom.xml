@@ -8,7 +8,7 @@
   </parent>
   
   <artifactId>2048877</artifactId>
-  <groupId>swt.ub4.a1</groupId>
+  <groupId>swt1.ub4.a1</groupId>
   
   <dependencies>
     <dependency>
