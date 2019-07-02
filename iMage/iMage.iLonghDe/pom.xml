@@ -5,7 +5,8 @@
     <artifactId>iMage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>iMage.iLonghDe</artifactId>
+  <groupId>swt1.ub5.a5</groupId>
+  <artifactId>2048877</artifactId>
   
   	<dependencies>
 		<dependency>
