@@ -27,5 +27,6 @@
   	<module>iMage.Instagrim-plugin</module>
   	<module>iMage.bundle</module>
   	<module>iMage.iCatcher</module>
+  	<module>iMage.iLonghDe</module>
   </modules>
 </project>
