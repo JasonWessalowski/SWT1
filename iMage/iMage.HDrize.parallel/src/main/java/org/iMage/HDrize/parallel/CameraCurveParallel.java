@@ -24,14 +24,14 @@ public class CameraCurveParallel extends CameraCurve {
 	// Maximum numbers of threads for the pool.
 	private static final int MAX_THREADS = 3;
 
-	private /*final*/ EnhancedImage[] images;
-	private /*final*/ int samples;
+	private EnhancedImage[] images;
+	private int samples;
 	private IMatrix[] respCurves;
 
-	private /*final*/ IMatrixCalculator<Matrix> matrixCalc;
+	private IMatrixCalculator<Matrix> matrixCalc;
 
 	private final Random random = new Random(42);
-	private /*final*/ double lambda;
+	private double lambda;
 	
 	@Override
 	public void calculate() {
